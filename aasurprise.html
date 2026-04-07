@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SURPRISE 2000 SUBS !</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@900&display=swap');
+        
+        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
+        
+        .container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+        
+        /* Étapes */
+        #start-screen, #step-video1, #step-video2, #step-msg, #step-video3, #step-final { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
+        .active { display: flex !important; }
+
+        h1 { font-size: 80px; text-transform: uppercase; color: #ffb700; text-shadow: 0 0 20px rgba(255, 183, 0, 0.6); margin: 0; }
+        .sub-text { font-size: 30px; margin-top: 20px; color: #ccc; max-width: 80%; }
+        .red-text { color: #d60000; text-shadow: 0 0 20px rgba(214, 0, 0, 0.6); font-size: 100px; }
+
+        .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; z-index: 100; transition: transform 0.2s; color: black; }
+        .btn-start:hover { transform: scale(1.05); }
+
+        /* Style des vidéos */
+        video { width: 80%; max-width: 1400px; border-radius: 15px; border: 4px solid #d60000; box-shadow: 0 0 30px rgba(214, 0, 0, 0.5); }
+        #vid3 { border-color: #ffb700; box-shadow: 0 0 30px rgba(255, 183, 0, 0.5); }
+
+        /* Animation des images produits */
+        .product-img { width: 400px; border-radius: 15px; border: 3px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.4); margin: 20px; opacity: 0; transform: scale(0.5); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .product-img.show { opacity: 1; transform: scale(1); }
+
+        .merci-kash { font-size: 120px; color: #fff; text-shadow: 0 0 30px #ffb700; margin-top: 20px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+    </style>
+</head>
+<body>
+
+<audio id="audio-troll" src="musiquetroll.mp3" preload="auto"></audio>
+<audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto"></audio>
+
+<div class="container">
+    
+    <div id="start-screen" class="active">
+        <h1>2000 SUBS</h1>
+        <p class="sub-text">Squadir, prépare-toi mentalement. Clique pour lancer la séquence.</p>
+        <button class="btn-start" onclick="startSequence()">LANCER LA SURPRISE</button>
+    </div>
+
+    <div id="step-video1">
+        <h1 style="margin-bottom: 20px;">ON REVIENT DE LOIN...(0 SUB)</h1>
+        <video id="vid1">
+            <source src="cliptroll.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div id="step-video2">
+        <h1 style="margin-bottom: 20px;">LES DOIGTS EN SANG ?🤣</h1>
+        <video id="vid2">
+            <source src="clipf1.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div id="step-msg">
+        <h1 class="red-text">IL EST TEMPS...</h1>
+        <p class="sub-text" style="font-size: 50px; color: white;">De passer à l'étape supérieure.</p>
+    </div>
+
+    <div id="step-video3">
+        <video id="vid3" muted>
+            <source src="setup.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div id="step-final">
+        <h1 style="font-size: 70px; margin-bottom: 20px;">BIENVENUE DANS LA SIMULATION F1</h1>
+        
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+            <img id="img1" src="volant.png" class="product-img" alt="Base R12">
+            <img id="img2" src="moteur.png" class="product-img" alt="Volant FSR">
+            <img id="img3" src="pedale.png" class="product-img" alt="Pedales CRP2">
+        </div>
+        
+        <div class="merci-kash">MERCI KASH !!!</div>
+        <p class="sub-text" style="color: #ffb700; font-weight: bold;">Base R12 (12Nm) + Volant FSR Formula + Pédalier CRP2.</p>
+    </div>
+
+</div>
+
+<script>
+    const vid1 = document.getElementById('vid1');
+    const audioTroll = document.getElementById('audio-troll');
+    
+    const vid2 = document.getElementById('vid2');
+    
+    const vid3 = document.getElementById('vid3');
+    const audioSetup = document.getElementById('audio-setup');
+
+    function startSequence() {
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('step-video1').classList.add('active');
+        
+        vid1.play();
+        audioTroll.volume = 0.4;
+        audioTroll.play();
+    }
+
+    // Fin vidéo 1
+    vid1.onended = function() {
+        audioTroll.pause();
+        audioTroll.currentTime = 0;
+
+        document.getElementById('step-video1').classList.remove('active');
+        document.getElementById('step-video2').classList.add('active');
+        vid2.play();
+    };
+
+    // Fin vidéo 2 -> Lancement de l'écran Texte ET de la musique
+    vid2.onended = function() {
+        document.getElementById('step-video2').classList.remove('active');
+        document.getElementById('step-msg').classList.add('active');
+        
+        // LA MUSIQUE COMMENCE ICI PENDANT LE TEXTE
+        audioSetup.volume = 0.8;
+        audioSetup.play();
+        
+        setTimeout(() => {
+            document.getElementById('step-msg').classList.remove('active');
+            document.getElementById('step-video3').classList.add('active');
+            vid3.play();
+        }, 4000); // Le texte reste 4 secondes à l'écran
+    };
+
+    // ARRÊTER LA VIDÉO 3 EXACTEMENT À 1 MINUTE ET 15 SECONDES (75 sec)
+    let video3Ended = false;
+    vid3.addEventListener('timeupdate', function() {
+        // Dès que la vidéo atteint 75 secondes
+        if (vid3.currentTime >= 75 && !video3Ended) {
+            video3Ended = true;
+            vid3.pause(); // Coupe la vidéo
+            document.getElementById('step-video3').classList.remove('active');
+            startFinalReveal();
+        }
+    });
+
+    // Sécurité : si la vidéo fait moins de 1m15, on lance la fin quand même
+    vid3.onended = function() {
+        if (!video3Ended) {
+            video3Ended = true;
+            document.getElementById('step-video3').classList.remove('active');
+            startFinalReveal();
+        }
+    };
+
+    function startFinalReveal() {
+        document.getElementById('step-final').classList.add('active');
+        
+        // LA MUSIQUE N'EST PAS COUPÉE ET CONTINUE DE JOUER EN FOND NATURELLEMENT
+
+        // Affiche les images en cascade
+        setTimeout(() => document.getElementById('img1').classList.add('show'), 500);
+        setTimeout(() => document.getElementById('img2').classList.add('show'), 1500);
+        setTimeout(() => document.getElementById('img3').classList.add('show'), 2500);
+    }
+</script>
+
+</body>
+</html>
