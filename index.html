@@ -11,7 +11,7 @@
         .container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
         
         /* Étapes */
-        #start-screen, #step-video1, #step-video2, #step-msg, #step-video3, #step-final { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
+        #start-screen, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
         .active { display: flex !important; }
 
         h1 { font-size: 80px; text-transform: uppercase; color: #ffb700; text-shadow: 0 0 20px rgba(255, 183, 0, 0.6); margin: 0; }
@@ -66,6 +66,12 @@
         <p class="sub-text" style="font-size: 50px; color: white;">De passer à l'étape supérieure.</p>
     </div>
 
+    <div id="step-video-generique">
+        <video id="vid-generique">
+            <source src="generique.mp4" type="video/mp4">
+        </video>
+    </div>
+
     <div id="step-video3">
         <video id="vid3" muted>
             <source src="setup.mp4" type="video/mp4">
@@ -93,6 +99,8 @@
     
     const vid2 = document.getElementById('vid2');
     
+    const vidGenerique = document.getElementById('vid-generique');
+    
     const vid3 = document.getElementById('vid3');
     const audioSetup = document.getElementById('audio-setup');
 
@@ -105,7 +113,7 @@
         audioTroll.play();
     }
 
-    // Fin vidéo 1
+    // Fin vidéo 1 -> Lancement vidéo 2
     vid1.onended = function() {
         audioTroll.pause();
         audioTroll.currentTime = 0;
@@ -115,35 +123,42 @@
         vid2.play();
     };
 
-    // Fin vidéo 2 -> Lancement de l'écran Texte ET de la musique
+    // Fin vidéo 2 -> Lancement de l'écran Texte
     vid2.onended = function() {
         document.getElementById('step-video2').classList.remove('active');
         document.getElementById('step-msg').classList.add('active');
         
-        // LA MUSIQUE COMMENCE ICI PENDANT LE TEXTE
-        audioSetup.volume = 0.8;
-        audioSetup.play();
-        
+        // On attend 4 secondes puis on lance le générique
         setTimeout(() => {
             document.getElementById('step-msg').classList.remove('active');
-            document.getElementById('step-video3').classList.add('active');
-            vid3.play();
-        }, 4000); // Le texte reste 4 secondes à l'écran
+            document.getElementById('step-video-generique').classList.add('active');
+            vidGenerique.play();
+        }, 4000);
+    };
+
+    // Fin Générique -> Lancement Vidéo Setup + Musique sicmu
+    vidGenerique.onended = function() {
+        document.getElementById('step-video-generique').classList.remove('active');
+        document.getElementById('step-video3').classList.add('active');
+        
+        vid3.play();
+        // La musique commence ICI avec la vidéo du setup
+        audioSetup.volume = 0.8;
+        audioSetup.play();
     };
 
     // ARRÊTER LA VIDÉO 3 EXACTEMENT À 1 MINUTE ET 15 SECONDES (75 sec)
     let video3Ended = false;
     vid3.addEventListener('timeupdate', function() {
-        // Dès que la vidéo atteint 75 secondes
         if (vid3.currentTime >= 75 && !video3Ended) {
             video3Ended = true;
-            vid3.pause(); // Coupe la vidéo
+            vid3.pause(); 
             document.getElementById('step-video3').classList.remove('active');
             startFinalReveal();
         }
     });
 
-    // Sécurité : si la vidéo fait moins de 1m15, on lance la fin quand même
+    // Sécurité au cas où
     vid3.onended = function() {
         if (!video3Ended) {
             video3Ended = true;
@@ -155,7 +170,7 @@
     function startFinalReveal() {
         document.getElementById('step-final').classList.add('active');
         
-        // LA MUSIQUE N'EST PAS COUPÉE ET CONTINUE DE JOUER EN FOND NATURELLEMENT
+        // LA MUSIQUE (audioSetup) N'EST PAS COUPÉE ET CONTINUE DE JOUER
 
         // Affiche les images en cascade
         setTimeout(() => document.getElementById('img1').classList.add('show'), 500);
