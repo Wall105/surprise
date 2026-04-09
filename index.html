@@ -109,7 +109,8 @@
         document.getElementById('step-video1').classList.add('active');
         
         vid1.play();
-        audioTroll.volume = 0.4;
+        // Volume baissé ici (de 0.4 à 0.15)
+        audioTroll.volume = 0.15;
         audioTroll.play();
     }
 
@@ -142,8 +143,8 @@
         document.getElementById('step-video3').classList.add('active');
         
         vid3.play();
-        // La musique commence ICI avec la vidéo du setup
-        audioSetup.volume = 0.8;
+        // Volume baissé ici (de 0.8 à 0.3)
+        audioSetup.volume = 0.3;
         audioSetup.play();
     };
 
