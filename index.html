@@ -55,6 +55,7 @@
 
 <audio id="audio-troll" src="musiquetroll.mp3" preload="auto"></audio>
 <audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto"></audio>
+<audio id="audio-revelation" src="revelation.mp3" preload="auto"></audio>
 
 <div class="container">
     
@@ -135,6 +136,10 @@
     
     const vid3 = document.getElementById('vid3');
     const audioSetup = document.getElementById('audio-setup');
+    
+    const audioRevelation = document.getElementById('audio-revelation');
+    // J'AI BAISSÉ LE VOLUME ICI (De 0.4 à 0.15)
+    audioRevelation.volume = 0.15; 
 
     // =========================================================
     // APPARITION DES CONTRÔLES UNIQUEMENT AU SURVOL DE LA SOURIS
@@ -146,17 +151,27 @@
     });
 
     // =========================================================
-    // BARRE ESPACE POUR PLAY / PAUSE LA VIDÉO EN COURS
+    // BARRE ESPACE POUR PLAY / PAUSE (VIDÉOS & MUSIQUE DE RÉVÉLATION)
     // =========================================================
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
             const activeVideo = document.querySelector('.active video'); 
+            
             if (activeVideo) {
+                // Si on regarde une vidéo
                 e.preventDefault(); 
                 if (activeVideo.paused) {
                     activeVideo.play();
                 } else {
                     activeVideo.pause();
+                }
+            } else if (document.getElementById('step-predictions').classList.contains('active')) {
+                // Si on est sur l'écran des prédictions (plus de vidéo, juste la musique)
+                e.preventDefault();
+                if (audioRevelation.paused) {
+                    audioRevelation.play();
+                } else {
+                    audioRevelation.pause();
                 }
             }
         }
@@ -267,6 +282,13 @@
     }
 
     function startPredictionsReveal() {
+        // Coupe l'audio du setup de F1
+        audioSetup.pause();
+        
+        // Lance l'audio de la révélation !
+        audioRevelation.currentTime = 0;
+        audioRevelation.play();
+
         document.getElementById('step-final').classList.remove('active');
         document.getElementById('step-predictions').classList.add('active');
         
@@ -289,7 +311,6 @@
             delay += 1200; 
         });
 
-        // Fait apparaître le bouton "VOIR LE VAINQUEUR !" à la fin de la liste
         setTimeout(() => {
             const btnShowWinner = document.getElementById('btn-show-winner');
             btnShowWinner.style.opacity = '1';
@@ -297,12 +318,9 @@
         }, delay + 500); 
     }
 
-    // NOUVELLE FONCTION : Révèle la boîte du vainqueur au clic
     function revealTheWinner() {
-        // Cache le bouton pour faire de la place
         document.getElementById('btn-show-winner').style.display = 'none';
 
-        // Affiche la boîte du gagnant
         const winnerDiv = document.getElementById('winner-reveal');
         winnerDiv.innerHTML = `
             <div class="winner-title">🏆 LE GAGNANT 🏆</div>
