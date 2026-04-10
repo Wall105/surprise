@@ -8,22 +8,24 @@
         
         body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
         
-        .container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+        .container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; position: relative; }
         
         /* Étapes */
-        #start-screen, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
+        #start-screen, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final, #step-predictions { display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .active { display: flex !important; }
 
         h1 { font-size: 80px; text-transform: uppercase; color: #ffb700; text-shadow: 0 0 20px rgba(255, 183, 0, 0.6); margin: 0; }
         .sub-text { font-size: 30px; margin-top: 20px; color: #ccc; max-width: 80%; }
         .red-text { color: #d60000; text-shadow: 0 0 20px rgba(214, 0, 0, 0.6); font-size: 100px; }
 
-        .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; z-index: 100; transition: transform 0.2s; color: black; }
+        /* Titres par-dessus les vidéos plein écran */
+        .video-title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 50px; text-shadow: 2px 2px 10px #000, 0 0 20px rgba(0,0,0,0.8); pointer-events: none; }
+
+        .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; z-index: 100; transition: transform 0.2s, opacity 1s; color: black; }
         .btn-start:hover { transform: scale(1.05); }
 
-        /* Style des vidéos */
-        video { width: 80%; max-width: 1400px; border-radius: 15px; border: 4px solid #d60000; box-shadow: 0 0 30px rgba(214, 0, 0, 0.5); }
-        #vid3 { border-color: #ffb700; box-shadow: 0 0 30px rgba(255, 183, 0, 0.5); }
+        /* Style des vidéos (Plein écran, sans bordure) */
+        video { width: 100vw; height: 100vh; object-fit: contain; border: none; border-radius: 0; box-shadow: none; background: #000; outline: none; }
 
         /* Animation des images produits */
         .product-img { width: 400px; border-radius: 15px; border: 3px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.4); margin: 20px; opacity: 0; transform: scale(0.5); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -32,6 +34,21 @@
         .merci-kash { font-size: 120px; color: #fff; text-shadow: 0 0 30px #ffb700; margin-top: 20px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
+        /* Style des prédictions */
+        .predictions-list { display: flex; flex-direction: column; gap: 15px; width: 80%; max-width: 800px; margin-bottom: 30px; z-index: 2; }
+        .guess-item { background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 10px; font-size: 24px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #d60000; opacity: 0; transform: translateX(-50px); transition: all 0.5s ease-out; }
+        .guess-item.show { opacity: 1; transform: translateX(0); }
+        .guess-pseudo { font-weight: bold; color: #ccc; width: 30%; text-align: left; }
+        .guess-text { font-style: italic; color: #fff; flex-grow: 1; text-align: center; }
+        .guess-icon { width: 10%; text-align: right; font-size: 30px; }
+
+        .winner-box { display: none; background: rgba(255, 183, 0, 0.15); padding: 40px; border-radius: 15px; border: 4px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.6); text-align: center; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; position: relative; z-index: 10; margin-top: 20px; }
+        .winner-box.active { display: block; }
+        .winner-title { font-size: 40px; color: #ffb700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .winner-pseudo { font-size: 70px; color: #fff; text-shadow: 0 0 20px #fff; margin: 0; line-height: 1; }
+        .winner-prize { font-size: 35px; color: #00ff66; margin-top: 20px; font-weight: bold; text-shadow: 0 0 15px rgba(0, 255, 102, 0.5); animation: pulse 1.5s infinite; }
+
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.3); } 100% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -48,14 +65,14 @@
     </div>
 
     <div id="step-video1">
-        <h1 style="margin-bottom: 20px;">ON REVIENT DE LOIN...(0 SUB)</h1>
+        <h1 class="video-title">ON REVIENT DE LOIN...(0 SUB)</h1>
         <video id="vid1">
             <source src="cliptroll.mp4" type="video/mp4">
         </video>
     </div>
 
     <div id="step-video2">
-        <h1 style="margin-bottom: 20px;">LES DOIGTS EN SANG ?🤣</h1>
+        <h1 class="video-title">LES DOIGTS EN SANG ?🤣</h1>
         <video id="vid2">
             <source src="clipf1.mp4" type="video/mp4">
         </video>
@@ -88,7 +105,21 @@
         </div>
         
         <div class="merci-kash">MERCI KASH !!!</div>
-        <p class="sub-text" style="color: #ffb700; font-weight: bold;">Base R12 (12Nm) + Roue de formule FSR2 + Pédalier CRP2.</p>
+        <p class="sub-text" style="color: #ffb700; font-weight: bold; margin-bottom: 30px;">Base R12 (12Nm) + Roue de formule FSR2 + Pédalier CRP2.</p>
+        
+        <button id="btn-reveal-winner" class="btn-start" style="opacity: 0; pointer-events: none;" onclick="startPredictionsReveal()">VOIR QUI A DEVINÉ LA SURPRISE !</button>
+    </div>
+
+    <div id="step-predictions">
+        <h1 style="font-size: 60px; margin-bottom: 40px; color: #fff; text-shadow: none;">VOUS AVEZ ESSAYÉ DE DEVINER...</h1>
+        
+        <div class="predictions-list" id="predictions-list">
+        </div>
+
+        <button id="btn-show-winner" class="btn-start" style="opacity: 0; pointer-events: none; margin-top: 20px;" onclick="revealTheWinner()">VOIR LE VAINQUEUR !</button>
+
+        <div id="winner-reveal" class="winner-box">
+        </div>
     </div>
 
 </div>
@@ -100,21 +131,80 @@
     const vid2 = document.getElementById('vid2');
     
     const vidGenerique = document.getElementById('vid-generique');
+    vidGenerique.volume = 0.3; 
     
     const vid3 = document.getElementById('vid3');
     const audioSetup = document.getElementById('audio-setup');
+
+    // =========================================================
+    // APPARITION DES CONTRÔLES UNIQUEMENT AU SURVOL DE LA SOURIS
+    // =========================================================
+    const toutesLesVideos = document.querySelectorAll('video');
+    toutesLesVideos.forEach(video => {
+        video.addEventListener('mouseenter', () => video.setAttribute('controls', 'controls'));
+        video.addEventListener('mouseleave', () => video.removeAttribute('controls'));
+    });
+
+    // =========================================================
+    // BARRE ESPACE POUR PLAY / PAUSE LA VIDÉO EN COURS
+    // =========================================================
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            const activeVideo = document.querySelector('.active video'); 
+            if (activeVideo) {
+                e.preventDefault(); 
+                if (activeVideo.paused) {
+                    activeVideo.play();
+                } else {
+                    activeVideo.pause();
+                }
+            }
+        }
+    });
+
+    // =========================================================
+    // SYNCHRONISATION PLAY/PAUSE DES AUDIOS EXTERNES
+    // =========================================================
+    vid1.addEventListener('pause', () => audioTroll.pause());
+    vid1.addEventListener('play', () => { 
+        if (document.getElementById('step-video1').classList.contains('active')) audioTroll.play(); 
+    });
+
+    vid3.addEventListener('pause', () => audioSetup.pause());
+    vid3.addEventListener('play', () => { 
+        if (document.getElementById('step-video3').classList.contains('active')) audioSetup.play(); 
+    });
+
+    // =========================================================
+    // CONFIGURATION DES RÉPONSES
+    // =========================================================
+    const mauvaisesReponses = [
+        { pseudo: "Brondi", text: "L'aim" },
+        { pseudo: "M8-Clemsrider74", text: "Le MENTAL" },
+        { pseudo: "LaLoane", text: "Le Niveau" },
+        { pseudo: "sqd_alex_fcn", text: "Kash va voir Squadir IRL" },
+        { pseudo: "Takr34", text: "Lien avec le sport potentiellement avec ThePanash vu que c’est l’un de ses idoles" },
+        { pseudo: "sqd_mounette", text: "c’est un rdv avec ThePanash pour une séance" },
+        { pseudo: "sqd_mateouney", text: "ils vont à un GRAND PRIX F1" }
+    ];
+
+    const leGagnant = { 
+        pseudo: "nallatic", 
+        text: "Vrai simu f1", 
+        prize: "Jeu F1 avec manette"
+    };
+
+    // =========================================================
 
     function startSequence() {
         document.getElementById('start-screen').classList.remove('active');
         document.getElementById('step-video1').classList.add('active');
         
         vid1.play();
-        // Volume baissé ici (de 0.4 à 0.15)
         audioTroll.volume = 0.15;
         audioTroll.play();
     }
 
-    // Fin vidéo 1 -> Lancement vidéo 2
     vid1.onended = function() {
         audioTroll.pause();
         audioTroll.currentTime = 0;
@@ -124,12 +214,10 @@
         vid2.play();
     };
 
-    // Fin vidéo 2 -> Lancement de l'écran Texte
     vid2.onended = function() {
         document.getElementById('step-video2').classList.remove('active');
         document.getElementById('step-msg').classList.add('active');
         
-        // On attend 4 secondes puis on lance le générique
         setTimeout(() => {
             document.getElementById('step-msg').classList.remove('active');
             document.getElementById('step-video-generique').classList.add('active');
@@ -137,18 +225,15 @@
         }, 4000);
     };
 
-    // Fin Générique -> Lancement Vidéo Setup + Musique sicmu
     vidGenerique.onended = function() {
         document.getElementById('step-video-generique').classList.remove('active');
         document.getElementById('step-video3').classList.add('active');
         
         vid3.play();
-        // Volume baissé ici (de 0.8 à 0.3)
         audioSetup.volume = 0.3;
         audioSetup.play();
     };
 
-    // ARRÊTER LA VIDÉO 3 EXACTEMENT À 1 MINUTE ET 15 SECONDES (75 sec)
     let video3Ended = false;
     vid3.addEventListener('timeupdate', function() {
         if (vid3.currentTime >= 75 && !video3Ended) {
@@ -159,7 +244,6 @@
         }
     });
 
-    // Sécurité au cas où
     vid3.onended = function() {
         if (!video3Ended) {
             video3Ended = true;
@@ -171,12 +255,62 @@
     function startFinalReveal() {
         document.getElementById('step-final').classList.add('active');
         
-        // LA MUSIQUE (audioSetup) N'EST PAS COUPÉE ET CONTINUE DE JOUER
-
-        // Affiche les images en cascade
         setTimeout(() => document.getElementById('img1').classList.add('show'), 500);
         setTimeout(() => document.getElementById('img2').classList.add('show'), 1500);
         setTimeout(() => document.getElementById('img3').classList.add('show'), 2500);
+
+        setTimeout(() => {
+            const btn = document.getElementById('btn-reveal-winner');
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+        }, 4000);
+    }
+
+    function startPredictionsReveal() {
+        document.getElementById('step-final').classList.remove('active');
+        document.getElementById('step-predictions').classList.add('active');
+        
+        const listDiv = document.getElementById('predictions-list');
+        let delay = 500;
+        
+        mauvaisesReponses.forEach((item, index) => {
+            setTimeout(() => {
+                const guessEl = document.createElement('div');
+                guessEl.className = 'guess-item';
+                guessEl.innerHTML = `
+                    <span class="guess-pseudo">${item.pseudo}</span> 
+                    <span class="guess-text">"${item.text}"</span> 
+                    <span class="guess-icon">❌</span>
+                `;
+                listDiv.appendChild(guessEl);
+                
+                setTimeout(() => guessEl.classList.add('show'), 50);
+            }, delay);
+            delay += 1200; 
+        });
+
+        // Fait apparaître le bouton "VOIR LE VAINQUEUR !" à la fin de la liste
+        setTimeout(() => {
+            const btnShowWinner = document.getElementById('btn-show-winner');
+            btnShowWinner.style.opacity = '1';
+            btnShowWinner.style.pointerEvents = 'auto';
+        }, delay + 500); 
+    }
+
+    // NOUVELLE FONCTION : Révèle la boîte du vainqueur au clic
+    function revealTheWinner() {
+        // Cache le bouton pour faire de la place
+        document.getElementById('btn-show-winner').style.display = 'none';
+
+        // Affiche la boîte du gagnant
+        const winnerDiv = document.getElementById('winner-reveal');
+        winnerDiv.innerHTML = `
+            <div class="winner-title">🏆 LE GAGNANT 🏆</div>
+            <div class="winner-pseudo">${leGagnant.pseudo}</div>
+            <div class="guess-text" style="font-size: 26px; margin-top:15px;">A deviné : "${leGagnant.text}"</div>
+            <div class="winner-prize">🎁 IL GAGNE : ${leGagnant.prize} 🎁</div>
+        `;
+        winnerDiv.classList.add('active');
     }
 </script>
 
