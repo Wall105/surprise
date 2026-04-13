@@ -2,29 +2,49 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SURPRISE 2000 SUBS !</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SURPRISE 2000 SUBS | SQUADIR F1 EDITION</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap');
         
-        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            width: 100%; 
+            height: 100%; 
+            background: #000; 
+            color: #fff; 
+            font-family: 'Montserrat', sans-serif; 
+            overflow: hidden; 
+        }
         
-        /* Fond subtil de la page d'accueil */
         .container { 
-            width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; position: relative; 
+            width: 100vw; 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            text-align: center; 
+            position: relative; 
             background: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
             transition: background 1s ease;
         }
         
-        /* Étapes */
-        #start-screen, #step-countdown, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final, #step-predictions { 
-            display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; 
-            opacity: 1; transition: opacity 1.5s ease-in-out;
+        #start-screen, #step-countdown, #step-video1, #step-video2, #step-msg, 
+        #step-video-generique, #step-video3, #step-welcome-f1, #step-final, #step-predictions { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            opacity: 1; 
+            transition: opacity 1.5s ease-in-out;
         }
         .active { display: flex !important; }
-
         .fade-out { opacity: 0 !important; }
-
-        /* --- EFFETS DE LA PAGE DE GARDE CLEAN --- */
+        
         .glow-title { 
             font-size: 110px; 
             text-transform: uppercase; 
@@ -34,13 +54,11 @@
             letter-spacing: 5px;
             animation: breathe 3s ease-in-out infinite alternate;
         }
-
         @keyframes breathe {
             0% { text-shadow: 0 0 20px rgba(255, 183, 0, 0.4); transform: scale(1); }
             100% { text-shadow: 0 0 50px rgba(255, 183, 0, 0.8), 0 0 80px rgba(255, 183, 0, 0.4); transform: scale(1.02); }
         }
-
-        /* Bouton Lancer stylé */
+        
         .btn-lancer {
             padding: 25px 50px;
             font-size: 28px;
@@ -54,15 +72,14 @@
             letter-spacing: 2px;
             box-shadow: 0 10px 20px rgba(214, 0, 0, 0.4);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Montserrat', sans-serif;
         }
-        
         .btn-lancer:hover {
             background: #ff0000;
             transform: scale(1.1) translateY(-5px);
             box-shadow: 0 15px 30px rgba(255, 0, 0, 0.6);
         }
-
-        /* --- ANIMATION DU COMPTE A REBOURS --- */
+        
         #countdown-text {
             font-size: 250px;
             font-family: 'Anton', sans-serif; 
@@ -71,84 +88,527 @@
             margin: 0;
             opacity: 0;
         }
-
         .pop-anim {
             animation: popCount 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
         @keyframes popCount {
             0% { transform: scale(0.2); opacity: 0; }
             20% { transform: scale(1.1); opacity: 1; }
             80% { transform: scale(1); opacity: 1; }
             100% { transform: scale(1.5); opacity: 0; }
         }
-
-        /* -------------------------------------- */
-
-        /* Titres standards (pour les autres pages) */
+        
         h1 { font-size: 80px; text-transform: uppercase; color: #ffb700; text-shadow: 0 0 20px rgba(255, 183, 0, 0.6); margin: 0; }
         .sub-text { font-size: 30px; margin-top: 20px; color: #ccc; max-width: 80%; }
         .red-text { color: #d60000; text-shadow: 0 0 20px rgba(214, 0, 0, 0.6); font-size: 100px; }
-
-        .video-title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 50px; text-shadow: 2px 2px 10px #000, 0 0 20px rgba(0,0,0,0.8); pointer-events: none; }
-
-        /* Bouton standard (pour la fin) */
-        .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; z-index: 100; transition: transform 0.2s, opacity 1s; color: black; }
+        .video-title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 50px; text-shadow: 2px 2px 10px #000; pointer-events: none; }
+        video { width: 100vw; height: 100vh; object-fit: contain; background: #000; outline: none; }
+        .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; transition: transform 0.2s; color: black; }
         .btn-start:hover { transform: scale(1.05); }
-
-        video { width: 100vw; height: 100vh; object-fit: contain; border: none; border-radius: 0; box-shadow: none; background: #000; outline: none; }
-
-        .product-img { width: 400px; border-radius: 15px; border: 3px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.4); margin: 20px; opacity: 0; transform: scale(0.5); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .product-img.show { opacity: 1; transform: scale(1); }
-
-        .merci-kash { font-size: 120px; color: #fff; text-shadow: 0 0 30px #ffb700; margin-top: 20px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-        /* ================================================== */
-        /* NOUVEAU STYLE DES PRÉDICTIONS (2 COLONNES)         */
-        /* ================================================== */
-        .predictions-list { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; /* Sépare en deux colonnes égales */
-            gap: 20px; 
-            width: 95%; 
-            max-width: 1400px; /* Plus grand pour que les 2 colonnes respirent */
-            margin-bottom: 30px; 
-            z-index: 2; 
-        }
-        .guess-item { 
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 15px 20px; 
-            border-radius: 10px; 
-            font-size: 20px; /* Taille légèrement réduite pour les phrases longues */
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-left: 5px solid #d60000; 
-            opacity: 0; 
-            transform: translateY(30px); /* Arrive par le bas au lieu du côté */
-            transition: all 0.5s ease-out; 
-        }
-        .guess-item.show { opacity: 1; transform: translateY(0); }
         
-        .guess-pseudo { font-weight: bold; color: #ccc; width: 25%; text-align: left; }
-        .guess-text { font-style: italic; color: #fff; flex-grow: 1; text-align: center; padding: 0 10px; line-height: 1.3; }
-        .guess-icon { width: 10%; text-align: right; font-size: 26px; }
+        /* ========== AFFICHE STATIQUE STYLÉE (BIENVENUE) ========== */
+        #step-welcome-f1 {
+            justify-content: center;
+            background: radial-gradient(ellipse at 20% 30%, #0a0f1f 0%, #020308 100%);
+            overflow: hidden;
+        }
+        .f1-poster {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+            background: radial-gradient(circle at 80% 10%, rgba(255, 50, 50, 0.15), transparent 60%),
+                        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+        }
+        .poster-bg-dynamic {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #03050b 0%, #0c1122 45%, #141a30 100%);
+            z-index: 0;
+        }
+        .racing-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask: radial-gradient(circle at center, black 40%, transparent 90%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .vignette {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 90%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .poster-main-layout {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 1500px;
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 40px 0 20px;
+            backdrop-filter: blur(2px);
+        }
+        .poster-left {
+            flex: 1.2;
+            text-align: left;
+            padding-left: 5%;
+            transform: translateY(20px);
+            animation: fadeSlideUp 1s ease-out forwards;
+        }
+        .special-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #d60000, #ff4d00);
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(214,0,0,0.5);
+            font-family: 'Orbitron', monospace;
+        }
+        .main-welcome-title {
+            font-size: 82px;
+            font-family: 'Orbitron', 'Anton', sans-serif;
+            text-transform: uppercase;
+            line-height: 1;
+            background: linear-gradient(135deg, #FFFFFF 20%, #FFD966 60%, #FF4D00 90%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255,77,0,0.3);
+            margin-bottom: 20px;
+        }
+        .simulation-sub {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #ffb347;
+            text-transform: uppercase;
+            border-left: 5px solid #d60000;
+            padding-left: 20px;
+            margin: 15px 0;
+            font-family: 'Orbitron', monospace;
+        }
+        .desc-text {
+            font-size: 18px;
+            color: #ccccdd;
+            max-width: 500px;
+            margin: 25px 0;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        .poster-right {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            animation: fadeSlideRight 1s ease-out 0.2s forwards;
+            opacity: 0;
+            transform: translateX(30px);
+            animation-fill-mode: forwards;
+        }
+        .driver-portrait {
+            position: relative;
+            z-index: 10;
+            width: 85%;
+            max-width: 480px;
+            filter: drop-shadow(0 20px 25px rgba(0,0,0,0.7)) brightness(1.05) contrast(1.1);
+        }
+        .driver-portrait img {
+            width: 100%;
+            display: block;
+            -webkit-mask: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+            mask: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+        }
+        .f1-car-overlay {
+            position: absolute;
+            bottom: -20px;
+            right: -30px;
+            width: 70%;
+            max-width: 450px;
+            z-index: 20;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+            animation: carFloat 3s infinite alternate ease-in-out;
+        }
+        .f1-car-overlay img {
+            width: 100%;
+            transform: scaleX(-1);
+        }
+        .isack-mention {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            background: linear-gradient(120deg, #1a2a3a, #0a0f1a);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: bold;
+            border-right: 3px solid #ffb700;
+            font-family: monospace;
+            letter-spacing: 1px;
+            color: #ffcc77;
+            z-index: 25;
+            backdrop-filter: blur(4px);
+        }
+        .isack-mention span { color: #fff; font-weight: 800; }
+        .poster-button-wrapper {
+            position: relative;
+            z-index: 30;
+            margin-bottom: 60px;
+            animation: fadeUp 1s ease-out 0.6s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            animation-fill-mode: forwards;
+        }
+        .btn-reveal-setup {
+            background: linear-gradient(90deg, #d60000, #b00000);
+            box-shadow: 0 0 20px rgba(214,0,0,0.6), 0 5px 15px rgba(0,0,0,0.5);
+            padding: 20px 55px;
+            font-size: 32px;
+            font-weight: 900;
+            transition: all 0.3s;
+        }
+        .btn-reveal-setup:hover {
+            transform: translateY(-6px) scale(1.05);
+            background: linear-gradient(90deg, #ff2200, #d60000);
+            box-shadow: 0 0 35px rgba(255, 50, 0, 0.8);
+        }
+        
+        /* ========== PAGE SETUP REDESIGNÉE ========== */
+        #step-final {
+            background: radial-gradient(ellipse at 20% 30%, #0a0f1f 0%, #020308 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .setup-premium {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        .setup-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #03050b 0%, #0c1122 45%, #141a30 100%);
+            z-index: 0;
+        }
+        .setup-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 70px 70px;
+            mask: radial-gradient(circle at center, black 30%, transparent 85%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .setup-vignette {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 90%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .setup-header {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .setup-header h1 {
+            font-size: 70px;
+            font-family: 'Orbitron', 'Anton', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF, #FFD966, #FF4D00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255,77,0,0.4);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+        .setup-sub {
+            font-size: 22px;
+            color: #ffb347;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 2px solid #d60000;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        .setup-gallery {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0 40px;
+            padding: 0 20px;
+        }
+        .setup-card {
+            background: rgba(10, 20, 35, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 25px 20px 20px;
+            width: 320px;
+            text-align: center;
+            border: 1px solid rgba(255, 183, 0, 0.4);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5), 0 0 15px rgba(214,0,0,0.2);
+            transition: transform 0.4s ease, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+        }
+        .setup-card.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: all 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .setup-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #ffb700;
+            box-shadow: 0 30px 40px rgba(0,0,0,0.6), 0 0 25px rgba(255,183,0,0.4);
+        }
+        .product-img {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            border-radius: 20px;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.6));
+            margin-bottom: 20px;
+        }
+        .setup-card h3 {
+            font-size: 28px;
+            font-family: 'Orbitron', monospace;
+            color: #ffb700;
+            margin: 15px 0 8px;
+        }
+        .setup-card p {
+            font-size: 16px;
+            color: #bbb;
+            font-weight: 500;
+        }
+        .setup-highlight {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin: 20px 0 30px;
+        }
+        .merci-kash {
+            font-size: 100px;
+            font-family: 'Anton', sans-serif;
+            background: linear-gradient(135deg, #ffb700, #ff4d00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 183, 0, 0.6);
+            animation: pulse 2s infinite;
+            letter-spacing: 6px;
+        }
+        .setup-spec {
+            font-size: 20px;
+            color: #ffcc77;
+            font-weight: bold;
+            background: rgba(0,0,0,0.6);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-top: 10px;
+            border-left: 4px solid #d60000;
+        }
+        .setup-button-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-top: 10px;
+        }
+        
+        /* ========== PAGE PRÉDICTIONS ========== */
+        #step-predictions {
+            background: radial-gradient(ellipse at 20% 30%, #0a0f1f 0%, #020308 100%);
+            overflow: hidden; /* PLUS DE SCROLL ICI */
+            position: relative;
+        }
+        .predictions-premium {
+            position: relative;
+            width: 100%;
+            height: 100%; /* S'adapte à l'écran sans dépasser */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centre le contenu verticalement */
+            align-items: center;
+            z-index: 2;
+            padding: 20px;
+        }
+        .predictions-header {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+        .predictions-header h1 {
+            font-size: 58px;
+            font-family: 'Orbitron', 'Anton', sans-serif;
+            background: linear-gradient(135deg, #FFFFFF, #FFD966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .predictions-sub {
+            font-size: 20px;
+            color: #ffb347;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+        .predictions-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px; /* Écart réduit pour tout faire rentrer */
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            z-index: 10;
+            position: relative;
+        }
+        .guess-item {
+            background: rgba(10, 20, 35, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 15px 20px; /* Padding réduit pour gain de place */
+            border-radius: 20px;
+            font-size: 18px; /* Police légèrement réduite */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #d60000;
+            border-right: 1px solid rgba(255, 183, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease-out;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .guess-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        .winner-box { display: none; background: rgba(255, 183, 0, 0.15); padding: 40px; border-radius: 15px; border: 4px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.6); text-align: center; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; position: relative; z-index: 10; margin-top: 20px; }
-        .winner-box.active { display: block; }
-        .winner-title { font-size: 40px; color: #ffb700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-        .winner-pseudo { font-size: 70px; color: #fff; text-shadow: 0 0 20px #fff; margin: 0; line-height: 1; }
-        .winner-prize { font-size: 35px; color: #00ff66; margin-top: 20px; font-weight: bold; text-shadow: 0 0 15px rgba(0, 255, 102, 0.5); animation: pulse 1.5s infinite; }
+        /* STYLE POUR LE VAINQUEUR DANS LA LISTE */
+        .guess-item.winner-item {
+            border-left: 5px solid #00ffaa;
+            border-right: 1px solid rgba(0, 255, 170, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 255, 170, 0.2);
+        }
 
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.3); } 100% { opacity: 1; transform: scale(1); } }
+        .guess-pseudo {
+            font-weight: bold;
+            color: #ffb700;
+            width: 25%;
+            text-align: left;
+            font-family: 'Orbitron', monospace;
+        }
+        .guess-text {
+            font-style: italic;
+            color: #fff;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .guess-icon {
+            width: 10%;
+            text-align: right;
+            font-size: 24px;
+        }
+        
+        .btn-winner-reveal {
+            background: linear-gradient(90deg, #d60000, #b00000);
+            border: none;
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+        }
+        .btn-winner-reveal:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #ff2200, #d60000);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        }
+        
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideRight {
+            0% { opacity: 0; transform: translateX(40px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes carFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-12px) rotate(2deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 1000px) {
+            .poster-main-layout { flex-direction: column; text-align: center; gap: 10px; }
+            .poster-left { text-align: center; padding-left: 0; }
+            .main-welcome-title { font-size: 55px; }
+            .poster-right { min-height: 300px; }
+            .setup-header h1 { font-size: 45px; }
+            .setup-gallery { gap: 20px; }
+            .setup-card { width: 260px; }
+            .merci-kash { font-size: 55px; }
+            .predictions-list { grid-template-columns: 1fr; width: 95%; }
+            .guess-item { padding: 12px 18px; font-size: 16px; }
+            .btn-winner-reveal { font-size: 20px; padding: 12px 30px; }
+        }
     </style>
 </head>
 <body>
 
 <audio id="audio-troll" src="musiquetroll.mp3" preload="auto"></audio>
-<audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto"></audio>
-<audio id="audio-revelation" src="revelation.mp3" preload="auto"></audio>
+<audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto" loop></audio>
 
 <div class="container" id="main-container">
     
@@ -193,33 +653,83 @@
         </video>
     </div>
 
-    <div id="step-final">
-        <h1 style="font-size: 70px; margin-bottom: 20px;">BIENVENUE DANS LA SIMULATION F1</h1>
-        
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
-            <img id="img1" src="volant.png" class="product-img" alt="Base R12">
-            <img id="img2" src="moteur.png" class="product-img" alt="Volant FSR">
-            <img id="img3" src="pedale.png" class="product-img" alt="Pedales CRP2">
+    <div id="step-welcome-f1">
+        <div class="f1-poster">
+            <div class="poster-bg-dynamic"></div>
+            <div class="racing-grid"></div>
+            <div class="vignette"></div>
+            <div class="poster-main-layout">
+                <div class="poster-left">
+                    <div class="special-badge">🔥 2000 SUBS · SURPRISE KASH 🔥</div>
+                    <h1 class="main-welcome-title">BIENVENUE<br>SQUADIR</h1>
+                    <div class="simulation-sub">SIMULATION F1 · 100% IMMERSION</div>
+                    <p class="desc-text">Le rêve devient réalité. Le simulateur de Formule 1 entre dans une nouvelle ère. Puissance, précision, adrénaline pure.</p>
+                </div>
+                <div class="poster-right">
+                    <div class="driver-portrait">
+                        <img src="squadirf1.png" alt="Squadir Driver">
+                    </div>
+                    <div class="f1-car-overlay">
+                        <img src="f1.png" alt="F1 Car">
+                    </div>
+                </div>
+            </div>
+            <div class="isack-mention"><span>🏁 SQUADIRFN 🏁</span> · PRO DRIVER</div>
+            <div class="poster-button-wrapper">
+                <button class="btn-lancer btn-reveal-setup" onclick="startFinalReveal()">DÉCOUVRIR LE MATÉRIEL !</button>
+            </div>
         </div>
-        
-        <div class="merci-kash">MERCI KASH !!!</div>
-        <p class="sub-text" style="color: #ffb700; font-weight: bold; margin-bottom: 30px;">Base R12 (12Nm) + Roue de formule FSR2 + Pédalier CRP2.</p>
-        
-        <button id="btn-reveal-winner" class="btn-start" style="opacity: 0; pointer-events: none;" onclick="startPredictionsReveal()">VOIR QUI A DEVINÉ LA SURPRISE !</button>
+    </div>
+
+    <div id="step-final">
+        <div class="setup-premium">
+            <div class="setup-bg"></div>
+            <div class="setup-grid"></div>
+            <div class="setup-vignette"></div>
+            <div class="setup-header">
+                <h1>RÉVÉLATION DU SETUP</h1>
+                <div class="setup-sub">La machine de guerre est là</div>
+            </div>
+            <div class="setup-gallery">
+                <div class="setup-card" id="card1">
+                    <img id="img1" src="volant.png" class="product-img" alt="Base R12">
+                    <h3>BASE R12</h3>
+                    <p>12Nm de couple • retour de force direct drive • précision absolue</p>
+                </div>
+                <div class="setup-card" id="card2">
+                    <img id="img2" src="moteur.png" class="product-img" alt="Volant FSR">
+                    <h3>VOLANT FSR2</h3>
+                    <p>Formule 2 • écran intégré • palettes magnétiques • carbone</p>
+                </div>
+                <div class="setup-card" id="card3">
+                    <img id="img3" src="pedale.png" class="product-img" alt="Pedales CRP2">
+                    <h3>PÉDALIER CRP2</h3>
+                    <p>Load cell • réglages pro • sensation course pure</p>
+                </div>
+            </div>
+            <div class="setup-highlight">
+                <div class="merci-kash">MERCI KASH !!!</div>
+                <div class="setup-spec">Base R12 (12Nm) + Roue de formule FSR2 + Pédalier CRP2</div>
+            </div>
+            <div class="setup-button-wrapper">
+                <button id="btn-reveal-winner" class="btn-start" style="opacity: 0; pointer-events: none;" onclick="startPredictionsReveal()">VOIR QUI A DEVINÉ LA SURPRISE !</button>
+            </div>
+        </div>
     </div>
 
     <div id="step-predictions">
-        <h1 style="font-size: 60px; margin-bottom: 40px; color: #fff; text-shadow: none;">VOUS AVEZ ESSAYÉ DE DEVINER...</h1>
-        
-        <div class="predictions-list" id="predictions-list">
-        </div>
-
-        <button id="btn-show-winner" class="btn-start" style="opacity: 0; pointer-events: none; margin-top: 20px;" onclick="revealTheWinner()">VOIR LE VAINQUEUR !</button>
-
-        <div id="winner-reveal" class="winner-box">
+        <div class="setup-bg"></div>
+        <div class="setup-grid"></div>
+        <div class="setup-vignette"></div>
+        <div class="predictions-premium">
+            <div class="predictions-header">
+                <h1>VOUS AVEZ ESSAYÉ DE DEVINER...</h1>
+                <div class="predictions-sub">Les pronostics de la communauté</div>
+            </div>
+            <div class="predictions-list" id="predictions-list"></div>
+            <button id="btn-show-winner" class="btn-winner-reveal" style="opacity: 0; pointer-events: none;" onclick="revealTheWinner()">🏆 VOIR LE VAINQUEUR 🏆</button>
         </div>
     </div>
-
 </div>
 
 <script>
@@ -230,8 +740,8 @@
     vidGenerique.volume = 0.3; 
     const vid3 = document.getElementById('vid3');
     const audioSetup = document.getElementById('audio-setup');
-    const audioRevelation = document.getElementById('audio-revelation');
-    audioRevelation.volume = 0.15; 
+    audioSetup.volume = 0.35;
+    audioSetup.loop = true;
 
     const toutesLesVideos = document.querySelectorAll('video');
     toutesLesVideos.forEach(video => {
@@ -245,17 +755,18 @@
             if (activeVideo) {
                 e.preventDefault(); 
                 if (activeVideo.paused) activeVideo.play(); else activeVideo.pause();
-            } else if (document.getElementById('step-predictions').classList.contains('active')) {
-                e.preventDefault();
-                if (audioRevelation.paused) audioRevelation.play(); else audioRevelation.pause();
             }
         }
     });
 
     vid1.addEventListener('pause', () => audioTroll.pause());
     vid1.addEventListener('play', () => { if (document.getElementById('step-video1').classList.contains('active')) audioTroll.play(); });
-    vid3.addEventListener('pause', () => audioSetup.pause());
-    vid3.addEventListener('play', () => { if (document.getElementById('step-video3').classList.contains('active')) audioSetup.play(); });
+    
+    vid3.addEventListener('play', () => { 
+        if (document.getElementById('step-video3').classList.contains('active')) {
+            if (audioSetup.paused) audioSetup.play().catch(e=>console.log);
+        }
+    });
 
     const mauvaisesReponses = [
         { pseudo: "Brondi", text: "L'aim" },
@@ -263,11 +774,11 @@
         { pseudo: "LaLoane", text: "Le NIVEAU" },
         { pseudo: "sqd_bryanou", text: "Kash va voir Squadir IRL" },
         { pseudo: "sqd_alex_fcn", text: "Kash et Squadir vont à un GRAND PRIX F1" },
-        { pseudo: "Takr34", text: "Un lien avec le sport, potentiellement avec ThePanash, vu que c’est l’une de ses idoles" },
+        { pseudo: "Takr34", text: "Un lien avec le sport, potentiellement avec ThePanash" },
         { pseudo: "sqd_mounette", text: "C’est un rendez-vous avec ThePanash pour une séance" },
         { pseudo: "sqd_mateouney", text: "Kash et Squadir vont à un GRAND PRIX F1" },
         { pseudo: "sqd_tigrou", text: "Un cours de karting" },
-        { pseudo: "rozuya_", text: "Soit un tapis de souris, soit une souris gaming (l’aim)" },
+        { pseudo: "rozuya_", text: "Soit un tapis de souris, soit une souris gaming" },
         { pseudo: "doryann", text: "Une Montre" }
     ];
 
@@ -277,19 +788,15 @@
         document.getElementById('main-container').style.background = '#000';
         document.getElementById('start-screen').classList.remove('active');
         document.getElementById('step-countdown').classList.add('active');
-
         const cdText = document.getElementById('countdown-text');
         let count = 3;
-
         function triggerAnim() {
             cdText.classList.remove('pop-anim');
             void cdText.offsetWidth; 
             cdText.classList.add('pop-anim');
         }
-
         cdText.innerText = count;
         triggerAnim();
-
         const interval = setInterval(() => {
             count--;
             if (count > 0) {
@@ -336,21 +843,16 @@
     vidGenerique.onended = function() {
         const genScreen = document.getElementById('step-video-generique');
         genScreen.classList.add('fade-out');
-
         setTimeout(() => {
             genScreen.classList.remove('active', 'fade-out');
-            
             const setupScreen = document.getElementById('step-video3');
             setupScreen.classList.add('active');
-            
             setupScreen.style.opacity = "0";
             setTimeout(() => {
                 setupScreen.style.opacity = "1";
                 vid3.play();
-                audioSetup.volume = 0.3;
-                audioSetup.play();
+                if (audioSetup.paused) audioSetup.play().catch(e=>console.log);
             }, 50);
-
         }, 1500);
     };
 
@@ -360,41 +862,43 @@
             video3Ended = true;
             vid3.pause(); 
             document.getElementById('step-video3').classList.remove('active');
-            startFinalReveal();
+            showWelcomeF1(); 
         }
     });
-
     vid3.onended = function() {
         if (!video3Ended) {
             video3Ended = true;
             document.getElementById('step-video3').classList.remove('active');
-            startFinalReveal();
+            showWelcomeF1(); 
         }
     };
 
+    function showWelcomeF1() {
+        document.getElementById('step-welcome-f1').classList.add('active');
+        if (audioSetup.paused) audioSetup.play();
+    }
+
     function startFinalReveal() {
+        document.getElementById('step-welcome-f1').classList.remove('active');
         document.getElementById('step-final').classList.add('active');
-        setTimeout(() => document.getElementById('img1').classList.add('show'), 500);
-        setTimeout(() => document.getElementById('img2').classList.add('show'), 1500);
-        setTimeout(() => document.getElementById('img3').classList.add('show'), 2500);
+        setTimeout(() => document.getElementById('card1').classList.add('show'), 300);
+        setTimeout(() => document.getElementById('card2').classList.add('show'), 900);
+        setTimeout(() => document.getElementById('card3').classList.add('show'), 1500);
         setTimeout(() => {
             const btn = document.getElementById('btn-reveal-winner');
             btn.style.opacity = '1';
             btn.style.pointerEvents = 'auto';
-        }, 4000);
+        }, 2800);
+        if (audioSetup.paused) audioSetup.play();
     }
 
     function startPredictionsReveal() {
-        audioSetup.pause();
-        audioRevelation.currentTime = 0;
-        audioRevelation.play();
         document.getElementById('step-final').classList.remove('active');
         document.getElementById('step-predictions').classList.add('active');
         const listDiv = document.getElementById('predictions-list');
-        
-        let delay = 500; // Délai avant la toute première case
-        
-        mauvaisesReponses.forEach((item, index) => {
+        listDiv.innerHTML = '';
+        let delay = 500; 
+        mauvaisesReponses.forEach((item) => {
             setTimeout(() => {
                 const guessEl = document.createElement('div');
                 guessEl.className = 'guess-item';
@@ -402,25 +906,42 @@
                 listDiv.appendChild(guessEl);
                 setTimeout(() => guessEl.classList.add('show'), 50);
             }, delay);
-            
-            // On augmente le cooldown ! Il est maintenant de 2.5 secondes (au lieu de 1.2)
-            delay += 2500; 
+            delay += 2000; 
         });
         
         setTimeout(() => {
             const btnShowWinner = document.getElementById('btn-show-winner');
             btnShowWinner.style.opacity = '1';
             btnShowWinner.style.pointerEvents = 'auto';
-        }, delay + 500); 
+        }, delay + 400); 
+        if (audioSetup.paused) audioSetup.play();
     }
 
     function revealTheWinner() {
-        document.getElementById('btn-show-winner').style.display = 'none';
-        const winnerDiv = document.getElementById('winner-reveal');
-        winnerDiv.innerHTML = `<div class="winner-title"> LE GAGNANT </div><div class="winner-pseudo">${leGagnant.pseudo}</div><div class="guess-text" style="font-size: 26px; margin-top:15px;">A deviné : "${leGagnant.text}"</div><div class="winner-prize">🎁 IL GAGNE : ${leGagnant.prize} 🎁</div>`;
-        winnerDiv.classList.add('active');
+        const btn = document.getElementById('btn-show-winner');
+        btn.style.opacity = '0';
+        btn.style.pointerEvents = 'none';
+        setTimeout(() => btn.style.display = 'none', 300);
+
+        const listDiv = document.getElementById('predictions-list');
+        const guessEl = document.createElement('div');
+        guessEl.className = 'guess-item winner-item';
+        
+        guessEl.innerHTML = `
+            <span class="guess-pseudo">${leGagnant.pseudo}</span>
+            <span class="guess-text">
+                "${leGagnant.text}"<br>
+                <span style="font-size: 14px; color: #00ffaa; font-weight: bold; font-style: normal; margin-top: 5px; display: inline-block;">🎁 Gain : ${leGagnant.prize}</span>
+            </span>
+            <span class="guess-icon">✅</span>
+        `;
+        
+        listDiv.appendChild(guessEl);
+        
+        setTimeout(() => guessEl.classList.add('show'), 50);
+
+        if (audioSetup.paused) audioSetup.play();
     }
 </script>
-
 </body>
 </html>
