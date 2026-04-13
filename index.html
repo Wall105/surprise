@@ -8,10 +8,15 @@
         
         body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
         
-        .container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; position: relative; }
+        /* Fond subtil de la page d'accueil */
+        .container { 
+            width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; position: relative; 
+            background: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            transition: background 1s ease;
+        }
         
         /* Étapes */
-        #start-screen, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final, #step-predictions { 
+        #start-screen, #step-countdown, #step-video1, #step-video2, #step-msg, #step-video-generique, #step-video3, #step-final, #step-predictions { 
             display: none; width: 100%; height: 100%; flex-direction: column; justify-content: center; align-items: center; position: relative; 
             opacity: 1; transition: opacity 1.5s ease-in-out;
         }
@@ -19,12 +24,75 @@
 
         .fade-out { opacity: 0 !important; }
 
+        /* --- EFFETS DE LA PAGE DE GARDE CLEAN --- */
+        .glow-title { 
+            font-size: 110px; 
+            text-transform: uppercase; 
+            color: #ffb700; 
+            text-shadow: 0 0 30px rgba(255, 183, 0, 0.5), 0 0 60px rgba(255, 183, 0, 0.2); 
+            margin: 0;
+            letter-spacing: 5px;
+            animation: breathe 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes breathe {
+            0% { text-shadow: 0 0 20px rgba(255, 183, 0, 0.4); transform: scale(1); }
+            100% { text-shadow: 0 0 50px rgba(255, 183, 0, 0.8), 0 0 80px rgba(255, 183, 0, 0.4); transform: scale(1.02); }
+        }
+
+        /* Bouton Lancer stylé */
+        .btn-lancer {
+            padding: 25px 50px;
+            font-size: 28px;
+            background: #d60000; 
+            border: none;
+            cursor: pointer;
+            font-weight: 900;
+            border-radius: 5px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(214, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .btn-lancer:hover {
+            background: #ff0000;
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 0, 0, 0.6);
+        }
+
+        /* --- ANIMATION DU COMPTE A REBOURS --- */
+        #countdown-text {
+            font-size: 250px;
+            font-family: 'Anton', sans-serif; 
+            color: #ffb700;
+            text-shadow: 0 0 50px rgba(255, 183, 0, 0.8);
+            margin: 0;
+            opacity: 0;
+        }
+
+        .pop-anim {
+            animation: popCount 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popCount {
+            0% { transform: scale(0.2); opacity: 0; }
+            20% { transform: scale(1.1); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* -------------------------------------- */
+
+        /* Titres standards (pour les autres pages) */
         h1 { font-size: 80px; text-transform: uppercase; color: #ffb700; text-shadow: 0 0 20px rgba(255, 183, 0, 0.6); margin: 0; }
         .sub-text { font-size: 30px; margin-top: 20px; color: #ccc; max-width: 80%; }
         .red-text { color: #d60000; text-shadow: 0 0 20px rgba(214, 0, 0, 0.6); font-size: 100px; }
 
         .video-title { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 50px; text-shadow: 2px 2px 10px #000, 0 0 20px rgba(0,0,0,0.8); pointer-events: none; }
 
+        /* Bouton standard (pour la fin) */
         .btn-start { padding: 20px 40px; font-size: 24px; background: #ffb700; border: none; cursor: pointer; font-weight: bold; border-radius: 10px; z-index: 100; transition: transform 0.2s, opacity 1s; color: black; }
         .btn-start:hover { transform: scale(1.05); }
 
@@ -36,12 +104,36 @@
         .merci-kash { font-size: 120px; color: #fff; text-shadow: 0 0 30px #ffb700; margin-top: 20px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .predictions-list { display: flex; flex-direction: column; gap: 15px; width: 80%; max-width: 800px; margin-bottom: 30px; z-index: 2; }
-        .guess-item { background: rgba(255, 255, 255, 0.05); padding: 15px 25px; border-radius: 10px; font-size: 24px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #d60000; opacity: 0; transform: translateX(-50px); transition: all 0.5s ease-out; }
-        .guess-item.show { opacity: 1; transform: translateX(0); }
-        .guess-pseudo { font-weight: bold; color: #ccc; width: 30%; text-align: left; }
-        .guess-text { font-style: italic; color: #fff; flex-grow: 1; text-align: center; }
-        .guess-icon { width: 10%; text-align: right; font-size: 30px; }
+        /* ================================================== */
+        /* NOUVEAU STYLE DES PRÉDICTIONS (2 COLONNES)         */
+        /* ================================================== */
+        .predictions-list { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* Sépare en deux colonnes égales */
+            gap: 20px; 
+            width: 95%; 
+            max-width: 1400px; /* Plus grand pour que les 2 colonnes respirent */
+            margin-bottom: 30px; 
+            z-index: 2; 
+        }
+        .guess-item { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 15px 20px; 
+            border-radius: 10px; 
+            font-size: 20px; /* Taille légèrement réduite pour les phrases longues */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-left: 5px solid #d60000; 
+            opacity: 0; 
+            transform: translateY(30px); /* Arrive par le bas au lieu du côté */
+            transition: all 0.5s ease-out; 
+        }
+        .guess-item.show { opacity: 1; transform: translateY(0); }
+        
+        .guess-pseudo { font-weight: bold; color: #ccc; width: 25%; text-align: left; }
+        .guess-text { font-style: italic; color: #fff; flex-grow: 1; text-align: center; padding: 0 10px; line-height: 1.3; }
+        .guess-icon { width: 10%; text-align: right; font-size: 26px; }
 
         .winner-box { display: none; background: rgba(255, 183, 0, 0.15); padding: 40px; border-radius: 15px; border: 4px solid #ffb700; box-shadow: 0 0 50px rgba(255, 183, 0, 0.6); text-align: center; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; position: relative; z-index: 10; margin-top: 20px; }
         .winner-box.active { display: block; }
@@ -58,12 +150,16 @@
 <audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto"></audio>
 <audio id="audio-revelation" src="revelation.mp3" preload="auto"></audio>
 
-<div class="container">
+<div class="container" id="main-container">
     
     <div id="start-screen" class="active">
-        <h1>2000 SUBS</h1>
-        <p class="sub-text">Squadir, prépare-toi mentalement. Clique pour lancer la séquence.</p>
-        <button class="btn-start" onclick="startSequence()">LANCER LA SURPRISE</button>
+        <h1 class="glow-title">2000 SUBS</h1>
+        <p class="sub-text" style="font-style: italic; color: #aaa; margin-bottom: 40px;">Squadir, prépare-toi mentalement. L'attente est terminée.</p>
+        <button class="btn-lancer" onclick="startCountdown()">LANCER LA SÉQUENCE</button>
+    </div>
+
+    <div id="step-countdown">
+        <div id="countdown-text">3</div>
     </div>
 
     <div id="step-video1">
@@ -164,17 +260,55 @@
     const mauvaisesReponses = [
         { pseudo: "Brondi", text: "L'aim" },
         { pseudo: "M8-Clemsrider74", text: "Le MENTAL" },
-        { pseudo: "LaLoane", text: "Le Niveau" },
-        { pseudo: "sqd_alex_fcn", text: "Kash va voir Squadir IRL" },
-        { pseudo: "Takr34", text: "Lien avec le sport potentiellement avec ThePanash vu que c’est l’un de ses idoles" },
-        { pseudo: "sqd_mounette", text: "c’est un rdv avec ThePanash pour une séance" },
-        { pseudo: "sqd_mateouney", text: "ils vont à un GRAND PRIX F1" }
+        { pseudo: "LaLoane", text: "Le NIVEAU" },
+        { pseudo: "sqd_bryanou", text: "Kash va voir Squadir IRL" },
+        { pseudo: "sqd_alex_fcn", text: "Kash et Squadir vont à un GRAND PRIX F1" },
+        { pseudo: "Takr34", text: "Un lien avec le sport, potentiellement avec ThePanash, vu que c’est l’une de ses idoles" },
+        { pseudo: "sqd_mounette", text: "C’est un rendez-vous avec ThePanash pour une séance" },
+        { pseudo: "sqd_mateouney", text: "Kash et Squadir vont à un GRAND PRIX F1" },
+        { pseudo: "sqd_tigrou", text: "Un cours de karting" },
+        { pseudo: "rozuya_", text: "Soit un tapis de souris, soit une souris gaming (l’aim)" },
+        { pseudo: "doryann", text: "Une Montre" }
     ];
 
     const leGagnant = { pseudo: "nallatic", text: "Vrai simu f1", prize: "Jeu F1 avec manette" };
 
-    function startSequence() {
+    function startCountdown() {
+        document.getElementById('main-container').style.background = '#000';
         document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('step-countdown').classList.add('active');
+
+        const cdText = document.getElementById('countdown-text');
+        let count = 3;
+
+        function triggerAnim() {
+            cdText.classList.remove('pop-anim');
+            void cdText.offsetWidth; 
+            cdText.classList.add('pop-anim');
+        }
+
+        cdText.innerText = count;
+        triggerAnim();
+
+        const interval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                cdText.innerText = count;
+                triggerAnim();
+            } else if (count === 0) {
+                cdText.innerText = "GO !";
+                cdText.style.color = "#d60000"; 
+                cdText.style.textShadow = "0 0 50px rgba(214, 0, 0, 0.8)";
+                triggerAnim();
+            } else {
+                clearInterval(interval);
+                document.getElementById('step-countdown').classList.remove('active');
+                startSequence();
+            }
+        }, 1000); 
+    }
+
+    function startSequence() {
         document.getElementById('step-video1').classList.add('active');
         vid1.play();
         audioTroll.volume = 0.15;
@@ -257,7 +391,9 @@
         document.getElementById('step-final').classList.remove('active');
         document.getElementById('step-predictions').classList.add('active');
         const listDiv = document.getElementById('predictions-list');
-        let delay = 500;
+        
+        let delay = 500; // Délai avant la toute première case
+        
         mauvaisesReponses.forEach((item, index) => {
             setTimeout(() => {
                 const guessEl = document.createElement('div');
@@ -266,8 +402,11 @@
                 listDiv.appendChild(guessEl);
                 setTimeout(() => guessEl.classList.add('show'), 50);
             }, delay);
-            delay += 1200; 
+            
+            // On augmente le cooldown ! Il est maintenant de 2.5 secondes (au lieu de 1.2)
+            delay += 2500; 
         });
+        
         setTimeout(() => {
             const btnShowWinner = document.getElementById('btn-show-winner');
             btnShowWinner.style.opacity = '1';
@@ -278,7 +417,7 @@
     function revealTheWinner() {
         document.getElementById('btn-show-winner').style.display = 'none';
         const winnerDiv = document.getElementById('winner-reveal');
-        winnerDiv.innerHTML = `<div class="winner-title">🏆 LE GAGNANT 🏆</div><div class="winner-pseudo">${leGagnant.pseudo}</div><div class="guess-text" style="font-size: 26px; margin-top:15px;">A deviné : "${leGagnant.text}"</div><div class="winner-prize">🎁 IL GAGNE : ${leGagnant.prize} 🎁</div>`;
+        winnerDiv.innerHTML = `<div class="winner-title"> LE GAGNANT </div><div class="winner-pseudo">${leGagnant.pseudo}</div><div class="guess-text" style="font-size: 26px; margin-top:15px;">A deviné : "${leGagnant.text}"</div><div class="winner-prize">🎁 IL GAGNE : ${leGagnant.prize} 🎁</div>`;
         winnerDiv.classList.add('active');
     }
 </script>
