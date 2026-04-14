@@ -609,6 +609,7 @@
 
 <audio id="audio-troll" src="musiquetroll.mp3" preload="auto"></audio>
 <audio id="audio-setup" src="sicmu_Pz6U5Rzj.mp3" preload="auto" loop></audio>
+<audio id="audio-revelation" src="revelation.mp3" preload="auto" loop></audio>
 
 <div class="container" id="main-container">
     
@@ -739,14 +740,33 @@
     const vidGenerique = document.getElementById('vid-generique');
     vidGenerique.volume = 0.3; 
     const vid3 = document.getElementById('vid3');
+    
+    // Config Audio Setup & Revelation
     const audioSetup = document.getElementById('audio-setup');
     audioSetup.volume = 0.35;
     audioSetup.loop = true;
+    
+    const audioRevelation = document.getElementById('audio-revelation');
+    audioRevelation.volume = 0.35;
+    audioRevelation.loop = true;
 
+    // NOUVEAU SYSTÈME POUR LA BARRE DE CONTRÔLE VIDÉO
     const toutesLesVideos = document.querySelectorAll('video');
+    let timeoutControls;
+
     toutesLesVideos.forEach(video => {
-        video.addEventListener('mouseenter', () => video.setAttribute('controls', 'controls'));
-        video.addEventListener('mouseleave', () => video.removeAttribute('controls'));
+        video.removeAttribute('controls');
+        video.addEventListener('mousemove', () => {
+            video.setAttribute('controls', 'controls');
+            clearTimeout(timeoutControls);
+            timeoutControls = setTimeout(() => {
+                video.removeAttribute('controls');
+            }, 2500); 
+        });
+        video.addEventListener('mouseleave', () => {
+            video.removeAttribute('controls');
+            clearTimeout(timeoutControls);
+        });
     });
 
     document.addEventListener('keydown', (e) => {
@@ -762,16 +782,20 @@
     vid1.addEventListener('pause', () => audioTroll.pause());
     vid1.addEventListener('play', () => { if (document.getElementById('step-video1').classList.contains('active')) audioTroll.play(); });
     
-    vid3.addEventListener('play', () => { 
-        if (document.getElementById('step-video3').classList.contains('active')) {
-            if (audioSetup.paused) audioSetup.play().catch(e=>console.log);
+    // DÉCLENCHEMENT MUSIQUE SETUP À 54 SECONDES DE LA VIDÉO GÉNÉRIQUE
+    let audioSetupStarted = false;
+    vidGenerique.addEventListener('timeupdate', function() {
+        if (vidGenerique.currentTime >= 54 && !audioSetupStarted) {
+            audioSetupStarted = true;
+            audioSetup.play().catch(e => console.log(e));
         }
     });
 
     const mauvaisesReponses = [
+        { pseudo: "nallatic", text: "Une journée SimRacing en stream  " },
         { pseudo: "Brondi", text: "L'aim" },
         { pseudo: "M8-Clemsrider74", text: "Le MENTAL" },
-        { pseudo: "LaLoane", text: "Le NIVEAU" },
+        { pseudo: "LaLoane", text: "Un coaching ou du matériel pour s’améliorer" },
         { pseudo: "sqd_bryanou", text: "Kash va voir Squadir IRL" },
         { pseudo: "sqd_alex_fcn", text: "Kash et Squadir vont à un GRAND PRIX F1" },
         { pseudo: "Takr34", text: "Un lien avec le sport, potentiellement avec ThePanash" },
@@ -779,10 +803,11 @@
         { pseudo: "sqd_mateouney", text: "Kash et Squadir vont à un GRAND PRIX F1" },
         { pseudo: "sqd_tigrou", text: "Un cours de karting" },
         { pseudo: "rozuya_", text: "Soit un tapis de souris, soit une souris gaming" },
-        { pseudo: "doryann", text: "Une Montre" }
+        { pseudo: "doryann", text: "Une Montre" },
+        { pseudo: "Ployv", text: "Une Montre" }
     ];
 
-    const leGagnant = { pseudo: "nallatic", text: "Vrai simu f1", prize: "Jeu F1 avec manette" };
+    const leGagnant = { pseudo: "ZenoWKEY", text: "Un pack Logitech G29/920/923 (volant et pedales)", prize: "Cadeau d'une valeur de +200€" };
 
     function startCountdown() {
         document.getElementById('main-container').style.background = '#000';
@@ -851,6 +876,7 @@
             setTimeout(() => {
                 setupScreen.style.opacity = "1";
                 vid3.play();
+                // Si l'audioSetup n'avait pas réussi à se lancer via le timeupdate (ex: sécurité navigateur), on force ici
                 if (audioSetup.paused) audioSetup.play().catch(e=>console.log);
             }, 50);
         }, 1500);
@@ -893,6 +919,11 @@
     }
 
     function startPredictionsReveal() {
+        // Transition Musicale : on coupe la musique setup, on lance la révélation
+        audioSetup.pause();
+        audioSetup.currentTime = 0;
+        audioRevelation.play().catch(e => console.log(e));
+
         document.getElementById('step-final').classList.remove('active');
         document.getElementById('step-predictions').classList.add('active');
         const listDiv = document.getElementById('predictions-list');
@@ -914,7 +945,6 @@
             btnShowWinner.style.opacity = '1';
             btnShowWinner.style.pointerEvents = 'auto';
         }, delay + 400); 
-        if (audioSetup.paused) audioSetup.play();
     }
 
     function revealTheWinner() {
@@ -940,7 +970,8 @@
         
         setTimeout(() => guessEl.classList.add('show'), 50);
 
-        if (audioSetup.paused) audioSetup.play();
+        // Assure que la musique de révélation tourne toujours
+        if (audioRevelation.paused) audioRevelation.play();
     }
 </script>
 </body>
